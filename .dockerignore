@@ -1,0 +1,33 @@
+# Dependencies and build artifacts
+node_modules
+**/node_modules
+**/.turbo
+**/dist
+
+# Apps not needed for the API image
+apps/dashboard
+apps/mobile
+
+# Packages (API has no workspace runtime deps)
+packages
+
+# Git and IDE
+.git
+.gitignore
+.cursor
+.vscode
+**/*.md
+!apps/api/docker-entrypoint.sh
+
+# Secrets and local env
+.env
+.env.*
+**/.env
+**/.env.*
+
+# Misc
+**/*.log
+**/coverage
+**/.DS_Store
+agent-transcripts
+assets

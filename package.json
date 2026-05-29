@@ -1,0 +1,30 @@
+{
+  "name": "lingo-sketch",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@9.4.0",
+  "engines": {
+    "node": ">=20.19.4"
+  },
+  "scripts": {
+    "dev": "turbo dev --filter=@lingo-sketch/api --filter=@lingo-sketch/dashboard --filter=@lingo-sketch/mobile",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "openapi:generate": "turbo openapi:generate",
+    "api-client:generate": "turbo run generate --filter=@lingo-sketch/api-client",
+    "api:generate": "pnpm openapi:generate && pnpm api-client:generate",
+    "db:generate": "turbo db:generate --filter=@lingo-sketch/api",
+    "db:migrate": "turbo db:migrate --filter=@lingo-sketch/api",
+    "db:local:up": "docker compose up -d postgres",
+    "db:local:down": "docker compose down",
+    "db:migrate:local": "docker compose up -d postgres && DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5433/lingo_sketch DATABASE_SSL=false turbo db:migrate --filter=@lingo-sketch/api",
+    "secrets:check": "bash scripts/check-no-secrets.sh",
+    "hooks:install": "git config core.hooksPath .githooks && chmod +x .githooks/pre-commit scripts/check-no-secrets.sh"
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2",
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.2"
+  }
+}

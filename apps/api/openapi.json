@@ -1,0 +1,605 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Lingo Sketch API",
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "HealthResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "AuthMeResponse": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "displayName": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "photoUrl": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "uid",
+          "email",
+          "displayName",
+          "photoUrl"
+        ]
+      },
+      "CreateRoomRequest": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "1v1",
+              "group"
+            ]
+          },
+          "groupName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          }
+        }
+      },
+      "CreateRoomResponse": {
+        "type": "object",
+        "properties": {
+          "roomId": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "1v1",
+              "group"
+            ]
+          },
+          "groupName": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "roomId",
+          "code",
+          "mode"
+        ]
+      },
+      "JoinRoomRequest": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 8
+          }
+        },
+        "required": [
+          "code"
+        ]
+      },
+      "JoinRoomResponse": {
+        "type": "object",
+        "properties": {
+          "roomId": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "1v1",
+              "group"
+            ]
+          },
+          "groupName": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "playerIndex": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 7
+          }
+        },
+        "required": [
+          "roomId",
+          "code",
+          "mode",
+          "playerIndex"
+        ]
+      },
+      "InviteToRoomRequest": {
+        "type": "object",
+        "properties": {
+          "emails": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "email"
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "emails"
+        ]
+      },
+      "InviteToRoomResponse": {
+        "type": "object",
+        "properties": {
+          "invited": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "email"
+            }
+          },
+          "invitedEmails": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "email"
+            }
+          },
+          "players": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "uid": {
+                  "type": "string"
+                },
+                "displayName": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "uid",
+                "displayName"
+              ]
+            }
+          }
+        },
+        "required": [
+          "invited",
+          "invitedEmails",
+          "players"
+        ]
+      },
+      "StartGroupGameResponse": {
+        "type": "object",
+        "properties": {
+          "started": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "started"
+        ]
+      },
+      "GroupInvite": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "roomId": {
+            "type": "string"
+          },
+          "roomCode": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "groupName": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "invitedByUid": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "roomId",
+          "roomCode",
+          "email",
+          "groupName",
+          "invitedByUid",
+          "status",
+          "createdAt"
+        ]
+      },
+      "GrammarError": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "integer"
+          },
+          "end": {
+            "type": "integer"
+          },
+          "bad": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "start",
+          "end",
+          "bad",
+          "message",
+          "type"
+        ]
+      },
+      "GrammarCheckRequest": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ]
+      },
+      "GrammarCheckResponse": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "corrected": {
+            "type": "string"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GrammarError"
+            }
+          }
+        },
+        "required": [
+          "ok",
+          "corrected",
+          "errors"
+        ]
+      }
+    },
+    "parameters": {},
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "getHealth",
+        "summary": "Health check",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "operationId": "getAuthMe",
+        "summary": "Get the authenticated user",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authenticated user profile",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthMeResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/games/rooms": {
+      "post": {
+        "operationId": "createGameRoom",
+        "summary": "Create a game room",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRoomRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Room created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateRoomResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/games/rooms/join": {
+      "post": {
+        "operationId": "joinGameRoom",
+        "summary": "Join a 1:1 game room by code",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JoinRoomRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Joined room",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JoinRoomResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Room not found"
+          }
+        }
+      }
+    },
+    "/games/rooms/{roomId}/invites": {
+      "post": {
+        "operationId": "inviteToGameRoom",
+        "summary": "Invite registered users to a group game by email",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "roomId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InviteToRoomRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Invites sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InviteToRoomResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/games/rooms/{roomId}/start": {
+      "post": {
+        "operationId": "startGroupGame",
+        "summary": "Host starts a group game",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "roomId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Game started",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StartGroupGameResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/games/invites/mine": {
+      "get": {
+        "operationId": "listMyGroupInvites",
+        "summary": "List pending group game invites for the current user",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pending invites",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GroupInvite"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/grammar/check": {
+      "post": {
+        "operationId": "checkGrammar",
+        "summary": "Check and correct English grammar",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GrammarCheckRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Grammar check result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GrammarCheckResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "webhooks": {}
+}

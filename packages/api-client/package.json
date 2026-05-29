@@ -1,0 +1,28 @@
+{
+  "name": "@lingo-sketch/api-client",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "generate": "openapi-ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@lingo-sketch/typescript-config": "workspace:*",
+    "@tanstack/react-query": "^5.62.8",
+    "typescript": "*"
+  },
+  "devDependencies": {
+    "@hey-api/openapi-ts": "^0.97.1"
+  }
+}

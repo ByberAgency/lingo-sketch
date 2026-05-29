@@ -1,0 +1,11 @@
+{
+  "extends": "@lingo-sketch/typescript-config/react.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@dashboard-api": ["./src/dashboard-api/index.ts"],
+      "@dashboard-api/*": ["./src/dashboard-api/*"]
+    }
+  },
+  "include": ["src"]
+}

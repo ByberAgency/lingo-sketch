@@ -1,0 +1,42 @@
+{
+  "name": "@lingo-sketch/api",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "nest build",
+    "dev": "nest start --watch --preserveWatchOutput",
+    "start": "nest start",
+    "start:prod": "node dist/src/main.js",
+    "typecheck": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx src/db/migrate.ts",
+    "openapi:generate": "tsx src/openapi/generate-openapi.ts"
+  },
+  "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^8.5.0",
+    "@google/generative-ai": "^0.24.1",
+    "@nestjs/common": "^10.4.15",
+    "@nestjs/config": "^3.3.0",
+    "@nestjs/core": "^10.4.15",
+    "@nestjs/platform-express": "^10.4.15",
+    "@nestjs/platform-socket.io": "^10.4.22",
+    "@nestjs/websockets": "^10.4.22",
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.38.3",
+    "firebase-admin": "^13.0.2",
+    "postgres": "^3.4.5",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "socket.io": "^4.8.3",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^10.4.9",
+    "@nestjs/schematics": "^10.2.3",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2",
+    "drizzle-kit": "^0.30.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
